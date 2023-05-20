@@ -11,7 +11,12 @@ const toysData = require('./toys.json')
 //sOLY0F2ujG5Y3tyd
 
 //middlewares
-app.use(cors());
+const corsConfig = {
+    credentials:true,
+    origin:true,
+    methods: ["GET","POST","PATCH","PUT","DELETE","OPTIONS"]
+}
+app.use(cors(corsConfig));
 app.use(express.json())
 
 
@@ -32,7 +37,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
     // Send a ping to confirm a successful connection
     // await client.db("toymarket").command({ ping: 1 });
     // console.log("Pinged your deployment. You successfully connected to MongoDB!");
