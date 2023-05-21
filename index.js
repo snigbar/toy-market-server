@@ -46,10 +46,49 @@ async function run() {
 
        
      query = {seller_email: req.query.email}
+     let sort = {}
+     if(req.query?.sort){
+        sort = {price: req.query.sort}
+     }
 
-          const result = await toysData.find(query).toArray();
+          const result = await toysData.find(query).sort(sort).toArray();
           res.send(result)
-          console.log(result)
+
+      })
+
+// add a toy
+      app.post('/add', async(req,res) =>{
+      
+        const data = req.body;
+        const result = await toysData.insertOne(data);
+        res.send(result)
+  
+      })
+
+// update a toy
+
+
+app.patch('/update/:id', async(req,res)=>{
+    const id = req.params.id;
+    let query ={_id: new ObjectId(id)}
+   const updatedData = req.body;
+
+    const updatedDoc = {
+      $set: updatedData
+    }
+    const result = await toysData.updateOne(query,updatedDoc);
+    res.send(result)
+    console.log(result)
+  })
+
+
+
+      app.delete('/mytoys/:id', async(req,res) =>{
+        const id = req.params.id;
+        let query ={_id: new ObjectId(id)}
+  
+        const result = await toysData.deleteOne(query);
+        res.send(result)
       })
    
 
