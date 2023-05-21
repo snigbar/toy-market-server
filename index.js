@@ -48,7 +48,7 @@ async function run() {
      query = {seller_email: req.query.email}
      let sort = {}
      if(req.query?.sort){
-        sort = {price: req.query.sort}
+     sort = {price: req.query.sort}    
      }
 
           const result = await toysData.find(query).sort(sort).toArray();
