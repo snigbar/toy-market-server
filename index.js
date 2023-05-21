@@ -42,7 +42,15 @@ async function run() {
 
     const toysData = client.db('toymarket').collection('toys-data');
     
+    app.get('/mytoys',async(req, res) => {
 
+       
+     query = {seller_email: req.query.email}
+
+          const result = await toysData.find(query).toArray();
+          res.send(result)
+          console.log(result)
+      })
    
 
 
@@ -57,6 +65,7 @@ async function run() {
         const query = req.query.limit || 20;
         const result = await toysData.find().limit(parseInt(query)).toArray();
         res.send(result)      
+      
     })
 
     app.get('/:id', async(req, res) => {
@@ -64,8 +73,10 @@ async function run() {
         const query = {_id: new ObjectId(id)}
         const result = await toysData.findOne(query);
         res.send(result)
+ 
       })
 
+    
 
   } finally {
     // Ensures that the client will close when you finish/error
