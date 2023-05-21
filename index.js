@@ -5,7 +5,6 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const port = process.env.PORT || 5000;
 require('dotenv').config()
 
-const toysData = require('./toys.json')
 
 // akbarmhbc
 //sOLY0F2ujG5Y3tyd
@@ -39,19 +38,24 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     client.connect();
     // Send a ping to confirm a successful connection
-    // await client.db("toymarket").command({ ping: 1 });
-    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
 
     const toysData = client.db('toymarket').collection('toys-data');
 
-    app.get('/', (req,res) =>{
-        res.send("running beta...")
-    })
 
-    app.get('/allToys', async(req,res)=>{
+    app.get('/', async(req,res)=>{
         const data = toysData.find();
         const result = await data.toArray();
         res.send(result);
+      
+    })
+
+    app.get('/alltoys', async(req,res)=>{
+       
+        const query = req.query.limit || 20;
+        const result = await toysData.find().limit(parseInt(query)).toArray();
+        res.send(result)
+        
     })
 
 
